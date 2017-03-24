@@ -34,4 +34,13 @@ sudo mn --custom onos.py --controller onos,1 --topo tree,2,2
 ```
 open: http://192.168.123.1:8181/onos/ui
 
-# Build Applications
+# Build Application
+```bash
+git clone https://github.com/siriulx/onos-acl-firewall
+cd onos-acl-firewall
+mvn compile
+mvn install
+```
+Load oar file to ONOS
+
+open: http://192.168.123.1:8181/onos/onos-acl-firewall/sample
