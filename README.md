@@ -1,4 +1,5 @@
-# Prerequisites
+# Test Environment
+## Prerequisites
 * Mininet (and bridge-utils):
 ```bash
 sudo apt-get update
@@ -18,7 +19,7 @@ sudo apt-get install git
 sudo apt-get install git-review
 ```
 
-# Build ONOS 1.8.4
+## Build ONOS 1.8.4
 Under home dir, run:
 ```bash
 git clone https://github.com/opennetworkinglab/onos
@@ -26,9 +27,11 @@ cd onos
 git checkout tags/1.8.4 -b 1.8.4
 tools/build/onos-buck build onos
 ```
-# Running ONOS with onos.py
+## Running ONOS with onos.py
 ```bash
 cd ~/onos/tools/dev/mininet
 sudo mn --custom onos.py --controller onos,1 --topo tree,2,2
 ```
 open: http://192.168.123.1:8181/onos/ui
+
+# Build Applications
