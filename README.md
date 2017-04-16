@@ -34,6 +34,11 @@ sudo mn --custom onos.py --controller onos,1 --topo tree,2,2
 ```
 open: http://192.168.123.1:8181/onos/ui
 
+# Creating an onos application with a REST interface.
+```bash
+onos-create-app rest org.foo.app foo-app 1.0.0
+```
+
 # Build Application
 ```bash
 git clone git@github.com:siriulx/onos-acl-firewall.git
@@ -44,11 +49,6 @@ mvn install
 Load oar file to ONOS
 
 open: http://192.168.123.1:8181/onos/onos-acl-firewall/sample
-
-# Creating an application with a REST interface.
-```bash
-onos-create-app rest org.foo.app foo-app 1.0.0
-```
 
 # Test Commands
 ```bash
