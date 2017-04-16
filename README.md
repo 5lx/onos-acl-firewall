@@ -44,3 +44,11 @@ mvn install
 Load oar file to ONOS
 
 open: http://192.168.123.1:8181/onos/onos-acl-firewall/sample
+
+
+# Test Commands
+```bash
+curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "deny", "srcIp":"10.0.0.1/32", "dstIp":"10.0.0.2/32"}'
+curl -sSL --user karaf:karaf -X DELETE http://192.168.123.1:8181/onos/onos-acl-firewall/sample
+curl -sSL --user karaf:karaf -X GET http://192.168.123.1:8181/onos/onos-acl-firewall/sample
+```
