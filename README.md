@@ -36,7 +36,7 @@ open: http://192.168.123.1:8181/onos/ui
 
 # Build Application
 ```bash
-git clone https://github.com/siriulx/onos-acl-firewall
+git clone git@github.com:siriulx/onos-acl-firewall.git
 cd onos-acl-firewall
 mvn compile
 mvn install
