@@ -22,25 +22,25 @@
     <version>1.0.0</version>
     <packaging>bundle</packaging>
 
-    <description>ONOS REST API bundle archetype</description>
-    <url>http://onosproject.org</url>
+    <description>ONOS Advanced ACL Firewall</description>
+    <url>https://github.com/siriulx/onos-acl-firewall</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <onos.version>1.8.4</onos.version>
 
-        <onos.app.name>org.foo.app</onos.app.name>
-        <onos.app.title>Foo App</onos.app.title>
-        <onos.app.origin>Foo, Inc.</onos.app.origin>
-        <onos.app.category>default</onos.app.category>
-        <onos.app.url>http://onosproject.org</onos.app.url>
-        <onos.app.readme>ONOS OSGi bundle archetype.</onos.app.readme>
+        <onos.app.name>org.cpsc8570.team4.onos-acl-firewall</onos.app.name>
+        <onos.app.title>Adv. ACL Firewall</onos.app.title>
+        <onos.app.origin>CPSC 8570 Team4</onos.app.origin>
+        <onos.app.category>Security</onos.app.category>
+        <onos.app.url>https://github.com/siriulx/onos-acl-firewall</onos.app.url>
+        <onos.app.readme>ONOS Advanced ACL Firewall</onos.app.readme>
 
         <web.context>/onos/onos-acl-firewall</web.context>
         <api.version>1.0.0</api.version>
-        <api.title>Sample app REST API</api.title>
+        <api.title>Advanced ACL Firewall</api.title>
         <api.description>
-            Sample application REST API
+            Advanced ACL Firewall
         </api.description>
         <api.package>org.cpsc8570.team4</api.package>
     </properties>
