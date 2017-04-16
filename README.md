@@ -45,6 +45,10 @@ Load oar file to ONOS
 
 open: http://192.168.123.1:8181/onos/onos-acl-firewall/sample
 
+# Creating an application with a REST interface.
+```bash
+onos-create-app rest org.foo.app foo-app 1.0.0
+```
 
 # Test Commands
 ```bash
