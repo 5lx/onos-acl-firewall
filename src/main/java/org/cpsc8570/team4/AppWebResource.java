@@ -17,6 +17,7 @@ package org.cpsc8570.team4;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.cpsc8570.team4.impl.AdvAclManager;
 import org.onlab.packet.Ethernet;
 import org.onlab.packet.Ip4Prefix;
 import org.onlab.packet.IpAddress;
@@ -52,29 +53,16 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.onlab.util.Tools.nullIsNotFound;
 
-/**
- * Sample web resource.
- */
-//@Component(immediate = true)
-//@Service
 @Path("sample")
 public class AppWebResource extends AbstractWebResource {
 
-
-//    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
-//    protected CoreService coreService;
-//    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
-//    protected FlowRuleService flowRuleService;
-//    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
-//    protected HostService hostService;
-//    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
-//    protected MastershipService mastershipService;
-
     private ApplicationId appId;
+    private String appName = "org.foo.app";
 
     /**
      * Get hello world greeting.
@@ -83,7 +71,13 @@ public class AppWebResource extends AbstractWebResource {
      */
     @GET
     public Response test() {
-        ObjectNode node = mapper().createObjectNode().put("hello", "world,haheha");
+
+        ObjectNode node = mapper().createObjectNode();
+        AdvAclService advAclService = get(AdvAclService.class);
+        List<AdvAclRule> rules = advAclService.getAdvAclRules();
+        for(AdvAclRule rule : rules){
+            node.put(rule.getId().toString(), rule.toString());
+        }
         return ok(node).build();
     }
 
@@ -98,67 +92,58 @@ public class AppWebResource extends AbstractWebResource {
         }
 
         // get data from json
-        String srcIp = node.path("srcIp").asText();
-        String dstIp = node.path("dstIp").asText();
+        String srcIpStart = node.path("srcIpStart").asText();
+        String srcIpEnd = node.path("srcIpEnd").asText();
+        String dstIpStart = node.path("dstIpStart").asText();
+        String dstIpEnd = node.path("dstIpEnd").asText();
         String action = node.path("action").asText();
+        int dstPort = node.path("dstPort").asInt();
+        String ipProto = node.path("ipProto").asText();
 
+        AdvAclRule rule = new AdvAclRule(srcIpStart, srcIpEnd, dstIpStart,
+                                         dstIpEnd, dstPort, ipProto, action);
 
-        // get device id
-        HostService hostService = get(HostService.class);
-        Set<DeviceId> selectedDeviceIds = new HashSet<>();
-        final Iterable<Host> hosts = hostService.getHosts();
+        AdvAclService advAclService = get(AdvAclService.class);
+        rule = advAclService.addAdvAclRule(rule);
 
-//        if(hostService == null){
-//        CoreService coreService = get(CoreService.class);
-//        appId = coreService.registerApplication("onos-acl-firewall");
-//        ObjectNode n = mapper().createObjectNode().put("abc", appId.toString());
-//        return ok(n).build();
-//        }
-
-        for(Host h : hosts){
-            for(IpAddress a : h.ipAddresses()){
-                if(a.getIp4Address().toInt() == Ip4Prefix.valueOf(srcIp).address().toInt()){
-                    selectedDeviceIds.add(h.location().deviceId());
-                }
-            }
+        if(!rule.isLeagal()){
+            return Response.noContent().build();
         }
 
-        // generate flow table
-        CoreService coreService = get(CoreService.class);
-        appId = coreService.registerApplication("onos-acl-firewall");
-        FlowRuleService flowRuleService = get(FlowRuleService.class);
-        if("deny".equals(action)){
+        ObjectNode ret = mapper().createObjectNode();
+        ret.put("rule", rule.toString());
+        return ok(ret).build();
+    }
 
-            for(DeviceId deviceId : selectedDeviceIds){
-
-                TrafficSelector.Builder selectorBuilder = DefaultTrafficSelector.builder();
-                TrafficTreatment.Builder treatment = DefaultTrafficTreatment.builder();
-                FlowEntry.Builder flowEntry = DefaultFlowEntry.builder();
-
-                selectorBuilder.matchEthType(Ethernet.TYPE_IPV4);
-                selectorBuilder.matchIPSrc(Ip4Prefix.valueOf(srcIp));
-                selectorBuilder.matchIPDst(Ip4Prefix.valueOf(dstIp));
-
-                flowEntry.forDevice(deviceId);
-                flowEntry.withSelector(selectorBuilder.build());
-                flowEntry.withTreatment(treatment.build());
-                flowEntry.withPriority(30000);
-                flowEntry.fromApp(appId);
-
-                flowEntry.makePermanent();
-                flowRuleService.applyFlowRules(flowEntry.build());
-            }
-
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response clearRule(InputStream stream) throws URISyntaxException{
+        JsonNode node;
+        try{
+            node = mapper().readTree(stream);
+        } catch (IOException e){
+            this.clearAll();
+            return Response.noContent().build();
+//            throw new IllegalArgumentException("Unable to parse ACL request", e);
         }
-        return ok(node).build();
+        long ruleId = node.path("ruleId").asLong();
+
+        AdvAclService advAclService = get(AdvAclService.class);
+        advAclService.clearByRuleId(AdvAclRuleId.valueOf(ruleId));
+        return Response.noContent().build();
     }
 
     @DELETE
     public Response clearAll(){
+
+        AdvAclService advAclService = get(AdvAclService.class);
+        advAclService.clearAll();
+
         FlowRuleService flowRuleService = get(FlowRuleService.class);
         CoreService coreService = get(CoreService.class);
-        appId = coreService.registerApplication("onos-acl-firewall");
+        appId = coreService.registerApplication(appName);
         flowRuleService.removeFlowRulesById(appId);
+
         return Response.noContent().build();
     }
 
