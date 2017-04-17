@@ -52,7 +52,9 @@ open: http://192.168.123.1:8181/onos/onos-acl-firewall/sample
 
 # Test Commands
 ```bash
-curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "deny", "srcIp":"10.0.0.1/32", "dstIp":"10.0.0.2/32"}'
+curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "DENY", "srcIpStart":"10.0.0.1", "srcIpEnd":"10.0.0.10", "dstIpStart":"10.0.0.1", "dstIpEnd":"10.0.0.10"}'
+curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "ALLOW", "srcIpStart":"10.0.0.0", "srcIpEnd":"10.0.0.25", "dstIpStart":"10.0.0.0", "dstIpEnd":"10.0.0.25"}'
 curl -sSL --user karaf:karaf -X DELETE http://192.168.123.1:8181/onos/onos-acl-firewall/sample
+curl -sSL --user karaf:karaf -X DELETE -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"ruleId": "1"}'
 curl -sSL --user karaf:karaf -X GET http://192.168.123.1:8181/onos/onos-acl-firewall/sample
 ```
