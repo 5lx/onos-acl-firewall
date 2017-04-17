@@ -60,6 +60,6 @@ curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://1
 
 curl -sSL --user karaf:karaf -X DELETE http://192.168.123.1:8181/onos/onos-acl-firewall/sample | jq
 
-curl -sSL --user karaf:karaf -X DELETE -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"ruleId": "0"}' | jq
+curl -sSL --user karaf:karaf -X DELETE -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"ruleId": "1"}' | jq
 
 ```
