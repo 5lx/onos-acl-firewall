@@ -30,7 +30,7 @@ tools/build/onos-buck build onos
 ## Running ONOS with onos.py
 ```bash
 cd ~/onos/tools/dev/mininet
-sudo mn --custom onos.py --controller onos,1 --topo tree,2,3
+sudo mn --custom onos.py --controller onos,1 --topo tree,2,2
 ```
 open: http://192.168.123.1:8181/onos/ui
 
@@ -54,9 +54,9 @@ open: http://192.168.123.1:8181/onos/onos-acl-firewall/sample
 ```bash
 curl -sSL --user karaf:karaf -X GET http://192.168.123.1:8181/onos/onos-acl-firewall/sample | jq
 
-curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "ALLOW", "srcIpStart":"10.0.0.3", "srcIpEnd":"10.0.0.7", "dstIpStart":"10.0.0.3", "dstIpEnd":"10.0.0.7"}' | jq
+curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "ALLOW", "srcIpStart":"10.0.0.2", "srcIpEnd":"10.0.0.3", "dstIpStart":"10.0.0.2", "dstIpEnd":"10.0.0.3"}' | jq
 
-curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "DENY", "srcIpStart":"10.0.0.1", "srcIpEnd":"10.0.0.9", "dstIpStart":"10.0.0.1", "dstIpEnd":"10.0.0.9"}' | jq
+curl -sSL --user karaf:karaf -X POST -H 'Content-Type:application/json' http://192.168.123.1:8181/onos/onos-acl-firewall/sample -d '{"action": "DENY", "srcIpStart":"10.0.0.1", "srcIpEnd":"10.0.0.4", "dstIpStart":"10.0.0.1", "dstIpEnd":"10.0.0.4"}' | jq
 
 curl -sSL --user karaf:karaf -X DELETE http://192.168.123.1:8181/onos/onos-acl-firewall/sample | jq
 
